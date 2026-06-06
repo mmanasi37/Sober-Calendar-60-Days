@@ -1,12 +1,13 @@
 {
   "days": {
     "2026-5-1": true,
-    "2026-5-2": true
+    "2026-5-2": true,
+    "2026-5-3": true
   },
   "summary": {
-    "ticked": 2,
-    "remaining": 58,
-    "percent": 3
+    "ticked": 3,
+    "remaining": 57,
+    "percent": 5
   },
-  "lastUpdated": "2026-06-06T23:58:03.719Z"
+  "lastUpdated": "2026-06-06T23:58:10.322Z"
 }
