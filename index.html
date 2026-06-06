@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bada Maxi's 60-Day Sober Challenge</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #F2F7F5;
+      min-height: 100vh;
+      padding: 24px 16px 48px;
+      color: #1a2e25;
+    }
+
+    .app {
+      max-width: 440px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(145deg, #1A8A6C 0%, #0F6652 100%);
+      border-radius: 20px;
+      padding: 32px 24px 28px;
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30px; left: -20px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+    }
+    .hero-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 8px;
+    }
+    .hero-counter {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .hero-num {
+      font-size: 72px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -3px;
+    }
+    .hero-of {
+      font-size: 22px;
+      font-weight: 400;
+      opacity: 0.7;
+    }
+    .hero-tagline {
+      font-size: 14px;
+      font-weight: 400;
+      opacity: 0.8;
+      margin-top: 4px;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap {
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .progress-bar-bg {
+      background: rgba(255,255,255,0.2);
+      border-radius: 99px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: white;
+      border-radius: 99px;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 11px;
+      opacity: 0.65;
+    }
+
+    /* ── Stats ── */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .stat {
+      background: white;
+      border-radius: 14px;
+      padding: 14px 10px;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .stat-num {
+      font-size: 26px;
+      font-weight: 700;
+      color: #1A8A6C;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: #7a9a8a;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ── Calendar card ── */
+    .cal-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+
+    .month-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #7a9a8a;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+
+    .day-header {
+      font-size: 10px;
+      font-weight: 600;
+      color: #b0c8bc;
+      text-align: center;
+      padding: 2px 0 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .day {
+      aspect-ratio: 1;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: #F2F7F5;
+      border: 1.5px solid transparent;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      position: relative;
+      user-select: none;
+    }
+    .day:hover:not(.future) {
+      background: #E3F0EC;
+      border-color: #9DCABB;
+    }
+    .day.past {
+      background: #EEF3F1;
+    }
+    .day.future {
+      opacity: 0.35;
+      cursor: default;
+    }
+    .day.today {
+      border-color: #F5A623;
+      background: #FFF9EE;
+      box-shadow: 0 0 0 3px rgba(245,166,35,0.12);
+    }
+    .day.today:hover {
+      background: #FFF3D6;
+    }
+    .day.ticked {
+      background: #1A8A6C;
+      border-color: #1A8A6C;
+      animation: pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .day.ticked:hover {
+      background: #17816A;
+      border-color: #17816A;
+    }
+    .day.milestone:not(.ticked) {
+      background: #FFF4E0;
+      border-color: #F5C96A;
+    }
+    .day.milestone:not(.ticked):hover {
+      background: #FFECC4;
+    }
+
+    @keyframes pop {
+      0%   { transform: scale(0.8); }
+      60%  { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+
+    .day-num {
+      font-size: 13px;
+      font-weight: 600;
+      color: #3a5a4a;
+      line-height: 1;
+    }
+    .day.ticked .day-num { color: white; }
+    .day.today:not(.ticked) .day-num { color: #B87800; }
+    .day.milestone:not(.ticked) .day-num { color: #9A6A00; }
+
+    .check-icon {
+      font-size: 13px;
+      color: rgba(255,255,255,0.9);
+      line-height: 1;
+      margin-top: 1px;
+    }
+
+    .day-badge {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-top: 1px;
+      line-height: 1;
+    }
+    .day.ticked .day-badge { color: rgba(255,255,255,0.8); }
+    .day.milestone:not(.ticked) .day-badge { color: #B8860B; }
+
+    .spacer { background: transparent; border: none; cursor: default; }
+    .spacer:hover { background: transparent; }
+
+    .month-divider {
+      height: 1px;
+      background: #EEF3F1;
+      margin: 16px 0;
+    }
+
+    /* ── Mantra card ── */
+    .mantra-card {
+      background: #1A8A6C;
+      border-radius: 16px;
+      padding: 20px 22px;
+      text-align: center;
+    }
+    .mantra-quote {
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.95);
+      line-height: 1.55;
+      font-style: italic;
+    }
+    .mantra-attr {
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.55);
+      margin-top: 10px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #a0b8ac;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-label">Bada Maxi's 60-Day Sober Challenge</div>
+    <div class="hero-counter">
+      <span class="hero-num" id="hero-day">0</span>
+      <span class="hero-of">/ 60 days</span>
+    </div>
+    <div class="hero-tagline" id="hero-tagline">We do hard things. Start the clock.</div>
+    <div class="progress-wrap">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <div class="progress-labels">
+        <span>June 1</span>
+        <span id="pct-label">0% complete</span>
+        <span>July 30</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num" id="count-ticked">0</div>
+      <div class="stat-label">days done</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="count-left">60</div>
+      <div class="stat-label">days to go</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="count-streak">0</div>
+      <div class="stat-label">day streak</div>
+    </div>
+  </div>
+
+  <!-- Calendar -->
+  <div class="cal-card">
+    <div id="calendar"></div>
+  </div>
+
+  <!-- Challenge Mantra -->
+  <div class="mantra-card">
+    <div class="mantra-quote">"Alcohol was my coping mechanism. Now I cope by showing up."</div>
+    <div class="mantra-attr">— Bada Maxi</div>
+  </div>
+
+  <div class="footer">June 1 – July 30, 2026 · tap each day to mark it off</div>
+
+</div>
+
+<script>
+  const KEY = 'sober60_v1';
+  const stored = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })();
+
+  const start  = new Date(2026, 5, 1);
+  const today  = new Date(2026, 5, 7);
+
+  const milestones = { 7: '1 week', 14: '2 weeks', 21: '3 weeks', 30: '1 month', 45: '45 days', 60: '60 DONE' };
+
+  const months = [
+    { name: 'June 2026',  year: 2026, month: 5 },
+    { name: 'July 2026',  year: 2026, month: 6 }
+  ];
+
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const cal = document.getElementById('calendar');
+
+  months.forEach(({ name, year, month }, mi) => {
+    if (mi > 0) {
+      const div = document.createElement('div');
+      div.className = 'month-divider';
+      cal.appendChild(div);
+    }
+
+    const title = document.createElement('div');
+    title.className = 'month-title';
+    title.textContent = name;
+    cal.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'grid';
+
+    dayNames.forEach(d => {
+      const h = document.createElement('div');
+      h.className = 'day-header';
+      h.textContent = d;
+      grid.appendChild(h);
+    });
+
+    const firstDow = new Date(year, month, 1).getDay();
+    for (let i = 0; i < firstDow; i++) {
+      const sp = document.createElement('div');
+      sp.className = 'spacer';
+      grid.appendChild(sp);
+    }
+
+    for (let d = 1; d <= 31; d++) {
+      const date = new Date(year, month, d);
+      if (date.getMonth() !== month) break;
+
+      const dayNum = Math.round((date - start) / 86400000) + 1;
+      if (dayNum < 1 || dayNum > 60) {
+        const sp = document.createElement('div');
+        sp.className = 'spacer';
+        grid.appendChild(sp);
+        continue;
+      }
+
+      const id  = `${year}-${month}-${d}`;
+      const el  = document.createElement('div');
+      el.className = 'day';
+
+      const isTicked   = !!stored[id];
+      const isToday    = date.getTime() === today.getTime();
+      const isPast     = date < today;
+      const isFuture   = date > today;
+      const isMilestone = !!milestones[dayNum];
+
+      if (isTicked)    el.classList.add('ticked');
+      if (isToday)     el.classList.add('today');
+      if (isPast && !isTicked) el.classList.add('past');
+      if (isFuture)    el.classList.add('future');
+      if (isMilestone) el.classList.add('milestone');
+
+      const numEl = document.createElement('div');
+      numEl.className = 'day-num';
+      numEl.textContent = d;
+      el.appendChild(numEl);
+
+      if (isTicked) {
+        const chk = document.createElement('div');
+        chk.className = 'check-icon';
+        chk.textContent = '✓';
+        el.appendChild(chk);
+      }
+
+      if (isMilestone) {
+        const badge = document.createElement('div');
+        badge.className = 'day-badge';
+        badge.textContent = milestones[dayNum];
+        el.appendChild(badge);
+      }
+
+      if (!isFuture) {
+        el.addEventListener('click', () => {
+          if (stored[id]) {
+            delete stored[id];
+            el.classList.remove('ticked');
+            el.querySelectorAll('.check-icon').forEach(c => c.remove());
+          } else {
+            stored[id] = true;
+            el.classList.add('ticked');
+            el.classList.remove('past');
+            const chk = document.createElement('div');
+            chk.className = 'check-icon';
+            chk.textContent = '✓';
+            el.appendChild(chk);
+          }
+          try { localStorage.setItem(KEY, JSON.stringify(stored)); } catch {}
+          updateStats();
+        });
+      }
+
+      grid.appendChild(el);
+    }
+
+    cal.appendChild(grid);
+  });
+
+  const taglines = [
+    'We do hard things. Start the clock.',
+    'Day by day. No shortcuts.',
+    'You chose clarity. Keep choosing it.',
+    'One week down. You proved you can.',
+    'Halfway there. The hard part is over.',
+    'Clear eyes. Full life. Keep going.',
+    'You didn\'t come this far to only come this far.',
+    '60 days. No excuses. Just results.',
+  ];
+
+  function calcStreak() {
+    let streak = 0;
+    for (let i = 0; i < 60; i++) {
+      const d = new Date(start.getTime() + i * 86400000);
+      if (d > today) break;
+      const id = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+      if (stored[id]) { streak++; } else { streak = 0; }
+    }
+    return streak;
+  }
+
+  function updateStats() {
+    const ticked = Object.keys(stored).length;
+    const pct    = Math.round(ticked / 60 * 100);
+    const streak = calcStreak();
+
+    document.getElementById('count-ticked').textContent = ticked;
+    document.getElementById('count-left').textContent   = 60 - ticked;
+    document.getElementById('count-streak').textContent = streak;
+    document.getElementById('hero-day').textContent     = ticked;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('pct-label').textContent   = pct + '% complete';
+
+    const idx = Math.min(Math.floor(ticked / 8), taglines.length - 1);
+    document.getElementById('hero-tagline').textContent = ticked > 0 ? taglines[idx] : 'We do hard things. Start the clock.';
+  }
+
+  updateStats();
+</script>
+</body>
+</html>
