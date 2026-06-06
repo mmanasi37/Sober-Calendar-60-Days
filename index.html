@@ -84,9 +84,61 @@
       margin-top: 4px;
     }
 
+    /* ── Sync badge ── */
+    .sync-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 14px;
+      position: relative;
+      z-index: 1;
+    }
+    .sync-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 99px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      cursor: default;
+      transition: background 0.2s;
+    }
+    .sync-badge.synced   { background: rgba(255,255,255,0.22); }
+    .sync-badge.syncing  { background: rgba(255,255,255,0.1); opacity: 0.7; }
+    .sync-badge.error    { background: rgba(255,80,80,0.25); border-color: rgba(255,80,80,0.4); }
+    .sync-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.6);
+      flex-shrink: 0;
+    }
+    .sync-badge.synced .sync-dot   { background: #7EFFD3; }
+    .sync-badge.syncing .sync-dot  { background: #FFD97A; animation: pulse 1s ease-in-out infinite; }
+    .sync-badge.error .sync-dot    { background: #FF8080; }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    .btn-settings {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 99px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.85);
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+    .btn-settings:hover { background: rgba(255,255,255,0.25); }
+
     /* ── Progress bar ── */
     .progress-wrap {
-      margin-top: 20px;
+      margin-top: 16px;
       position: relative;
       z-index: 1;
     }
@@ -144,7 +196,6 @@
       padding: 20px 16px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     }
-
     .month-title {
       font-size: 13px;
       font-weight: 600;
@@ -153,14 +204,12 @@
       text-transform: uppercase;
       margin-bottom: 12px;
     }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 5px;
       margin-bottom: 8px;
     }
-
     .day-header {
       font-size: 10px;
       font-weight: 600;
@@ -169,7 +218,6 @@
       padding: 2px 0 6px;
       letter-spacing: 0.04em;
     }
-
     .day {
       aspect-ratio: 1;
       border-radius: 10px;
@@ -184,41 +232,23 @@
       position: relative;
       user-select: none;
     }
-    .day:hover:not(.future) {
-      background: #E3F0EC;
-      border-color: #9DCABB;
-    }
-    .day.past {
-      background: #EEF3F1;
-    }
-    .day.future {
-      opacity: 0.35;
-      cursor: default;
-    }
+    .day:hover:not(.future) { background: #E3F0EC; border-color: #9DCABB; }
+    .day.past  { background: #EEF3F1; }
+    .day.future { opacity: 0.35; cursor: default; }
     .day.today {
       border-color: #F5A623;
       background: #FFF9EE;
       box-shadow: 0 0 0 3px rgba(245,166,35,0.12);
     }
-    .day.today:hover {
-      background: #FFF3D6;
-    }
+    .day.today:hover { background: #FFF3D6; }
     .day.ticked {
       background: #1A8A6C;
       border-color: #1A8A6C;
       animation: pop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .day.ticked:hover {
-      background: #17816A;
-      border-color: #17816A;
-    }
-    .day.milestone:not(.ticked) {
-      background: #FFF4E0;
-      border-color: #F5C96A;
-    }
-    .day.milestone:not(.ticked):hover {
-      background: #FFECC4;
-    }
+    .day.ticked:hover { background: #17816A; border-color: #17816A; }
+    .day.milestone:not(.ticked) { background: #FFF4E0; border-color: #F5C96A; }
+    .day.milestone:not(.ticked):hover { background: #FFECC4; }
 
     @keyframes pop {
       0%   { transform: scale(0.8); }
@@ -227,40 +257,19 @@
     }
 
     .day-num {
-      font-size: 13px;
-      font-weight: 600;
-      color: #3a5a4a;
-      line-height: 1;
+      font-size: 13px; font-weight: 600;
+      color: #3a5a4a; line-height: 1;
     }
     .day.ticked .day-num { color: white; }
     .day.today:not(.ticked) .day-num { color: #B87800; }
     .day.milestone:not(.ticked) .day-num { color: #9A6A00; }
-
-    .check-icon {
-      font-size: 13px;
-      color: rgba(255,255,255,0.9);
-      line-height: 1;
-      margin-top: 1px;
-    }
-
-    .day-badge {
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: 0.02em;
-      margin-top: 1px;
-      line-height: 1;
-    }
+    .check-icon { font-size: 13px; color: rgba(255,255,255,0.9); line-height: 1; margin-top: 1px; }
+    .day-badge  { font-size: 8px; font-weight: 700; letter-spacing: 0.02em; margin-top: 1px; line-height: 1; }
     .day.ticked .day-badge { color: rgba(255,255,255,0.8); }
     .day.milestone:not(.ticked) .day-badge { color: #B8860B; }
-
     .spacer { background: transparent; border: none; cursor: default; }
     .spacer:hover { background: transparent; }
-
-    .month-divider {
-      height: 1px;
-      background: #EEF3F1;
-      margin: 16px 0;
-    }
+    .month-divider { height: 1px; background: #EEF3F1; margin: 16px 0; }
 
     /* ── Mantra card ── */
     .mantra-card {
@@ -270,27 +279,85 @@
       text-align: center;
     }
     .mantra-quote {
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 15px; font-weight: 500;
       color: rgba(255,255,255,0.95);
-      line-height: 1.55;
-      font-style: italic;
+      line-height: 1.55; font-style: italic;
     }
     .mantra-attr {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 12px; font-weight: 600;
       color: rgba(255,255,255,0.55);
       margin-top: 10px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
+      letter-spacing: 0.04em; text-transform: uppercase;
     }
 
     /* ── Footer ── */
     .footer {
-      text-align: center;
-      font-size: 12px;
-      color: #a0b8ac;
-      font-weight: 500;
+      text-align: center; font-size: 12px;
+      color: #a0b8ac; font-weight: 500;
+    }
+
+    /* ── Settings modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 100;
+      align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 20px;
+      padding: 28px 24px;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal h3 {
+      font-size: 17px; font-weight: 700;
+      color: #1a2e25; margin-bottom: 6px;
+    }
+    .modal p {
+      font-size: 13px; color: #5a7a6a;
+      line-height: 1.6; margin-bottom: 16px;
+    }
+    .modal a { color: #1A8A6C; }
+    .modal label {
+      display: block; font-size: 12px;
+      font-weight: 600; color: #3a5a4a;
+      margin-bottom: 6px; letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .modal input {
+      width: 100%; padding: 10px 12px;
+      border: 1.5px solid #D0E5DC;
+      border-radius: 10px; font-size: 13px;
+      font-family: monospace; color: #1a2e25;
+      outline: none; margin-bottom: 16px;
+      transition: border-color 0.15s;
+    }
+    .modal input:focus { border-color: #1A8A6C; }
+    .modal-actions { display: flex; gap: 10px; }
+    .btn-save {
+      flex: 1; padding: 11px;
+      background: #1A8A6C; color: white;
+      border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-save:hover { background: #17816A; }
+    .btn-cancel {
+      padding: 11px 18px;
+      background: #F2F7F5; color: #5a7a6a;
+      border: none; border-radius: 10px;
+      font-size: 14px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+    }
+    .btn-cancel:hover { background: #E3F0EC; }
+    .modal-note {
+      font-size: 11px; color: #9ab8a8;
+      margin-top: 12px; line-height: 1.5;
     }
   </style>
 </head>
@@ -305,6 +372,15 @@
       <span class="hero-of">/ 60 days</span>
     </div>
     <div class="hero-tagline" id="hero-tagline">We do hard things. Start the clock.</div>
+
+    <div class="sync-row">
+      <div class="sync-badge" id="sync-badge">
+        <span class="sync-dot"></span>
+        <span id="sync-text">Not connected</span>
+      </div>
+      <button class="btn-settings" id="btn-settings">⚙ Connect</button>
+    </div>
+
     <div class="progress-wrap">
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" id="progress-fill"></div>
@@ -348,29 +424,123 @@
 
 </div>
 
+<!-- Settings modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h3>Connect to GitHub</h3>
+    <p>
+      Your mentor monitors your progress via the
+      <a href="https://github.com/mmanasi37/Sober-Calendar-60-Days" target="_blank">GitHub repo</a>.
+      Each time you tick a day, progress is pushed automatically.<br><br>
+      Create a token at <a href="https://github.com/settings/tokens/new?description=SoberCalendar&scopes=repo" target="_blank">github.com/settings/tokens</a>
+      — select <strong>repo</strong> scope.
+    </p>
+    <label for="pat-input">GitHub Personal Access Token</label>
+    <input type="password" id="pat-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+    <div class="modal-actions">
+      <button class="btn-save" id="btn-save-pat">Save &amp; Connect</button>
+      <button class="btn-cancel" id="btn-cancel">Cancel</button>
+    </div>
+    <p class="modal-note">Token is stored only in your browser. It is never sent anywhere except GitHub's API.</p>
+  </div>
+</div>
+
 <script>
-  const KEY = 'sober60_v1';
+  const KEY     = 'sober60_v1';
+  const PAT_KEY = 'sober60_gh_pat';
+  const REPO    = 'mmanasi37/Sober-Calendar-60-Days';
+  const FILE    = 'progress.json';
+  const API     = `https://api.github.com/repos/${REPO}/contents/${FILE}`;
+
   const stored = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; } })();
 
-  const start  = new Date(2026, 5, 1);
-  const today  = new Date(2026, 5, 7);
+  const start = new Date(2026, 5, 1);
+  const today = new Date(2026, 5, 7);
 
   const milestones = { 7: '1 week', 14: '2 weeks', 21: '3 weeks', 30: '1 month', 45: '45 days', 60: '60 DONE' };
-
-  const months = [
-    { name: 'June 2026',  year: 2026, month: 5 },
-    { name: 'July 2026',  year: 2026, month: 6 }
+  const months     = [
+    { name: 'June 2026', year: 2026, month: 5 },
+    { name: 'July 2026', year: 2026, month: 6 }
   ];
-
   const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  /* ── GitHub sync ── */
+  function getToken() { return localStorage.getItem(PAT_KEY) || ''; }
+
+  function setSyncStatus(state, text) {
+    const badge = document.getElementById('sync-badge');
+    const label = document.getElementById('sync-text');
+    badge.className = 'sync-badge ' + state;
+    label.textContent = text;
+  }
+
+  async function pushToGitHub() {
+    const token = getToken();
+    if (!token) return;
+    setSyncStatus('syncing', 'Syncing…');
+    try {
+      let sha = null;
+      const get = await fetch(API, { headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github+json' } });
+      if (get.ok) { const f = await get.json(); sha = f.sha; }
+
+      const ticked = Object.keys(stored).length;
+      const payload = {
+        days: stored,
+        summary: { ticked, remaining: 60 - ticked, percent: Math.round(ticked / 60 * 100) },
+        lastUpdated: new Date().toISOString()
+      };
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+      const body    = { message: `Progress update: ${ticked}/60 days ticked`, content, ...(sha ? { sha } : {}) };
+
+      const put = await fetch(API, {
+        method: 'PUT',
+        headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json', Accept: 'application/vnd.github+json' },
+        body: JSON.stringify(body)
+      });
+      if (put.ok) {
+        setSyncStatus('synced', `Synced · ${ticked}/60 days`);
+      } else {
+        setSyncStatus('error', 'Sync failed');
+      }
+    } catch {
+      setSyncStatus('error', 'Sync failed');
+    }
+  }
+
+  function refreshBadge() {
+    if (getToken()) {
+      setSyncStatus('synced', 'Connected');
+      document.getElementById('btn-settings').textContent = '⚙ Settings';
+    } else {
+      setSyncStatus('', 'Not connected');
+      document.getElementById('btn-settings').textContent = '⚙ Connect';
+    }
+  }
+
+  /* ── Settings modal ── */
+  document.getElementById('btn-settings').addEventListener('click', () => {
+    document.getElementById('pat-input').value = getToken();
+    document.getElementById('modal-overlay').classList.add('open');
+  });
+  document.getElementById('btn-cancel').addEventListener('click', () => {
+    document.getElementById('modal-overlay').classList.remove('open');
+  });
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+  });
+  document.getElementById('btn-save-pat').addEventListener('click', () => {
+    const val = document.getElementById('pat-input').value.trim();
+    if (val) { localStorage.setItem(PAT_KEY, val); } else { localStorage.removeItem(PAT_KEY); }
+    document.getElementById('modal-overlay').classList.remove('open');
+    refreshBadge();
+    if (val) pushToGitHub();
+  });
+
+  /* ── Calendar build ── */
   const cal = document.getElementById('calendar');
 
   months.forEach(({ name, year, month }, mi) => {
-    if (mi > 0) {
-      const div = document.createElement('div');
-      div.className = 'month-divider';
-      cal.appendChild(div);
-    }
+    if (mi > 0) { const d = document.createElement('div'); d.className = 'month-divider'; cal.appendChild(d); }
 
     const title = document.createElement('div');
     title.className = 'month-title';
@@ -388,60 +558,30 @@
     });
 
     const firstDow = new Date(year, month, 1).getDay();
-    for (let i = 0; i < firstDow; i++) {
-      const sp = document.createElement('div');
-      sp.className = 'spacer';
-      grid.appendChild(sp);
-    }
+    for (let i = 0; i < firstDow; i++) { const sp = document.createElement('div'); sp.className = 'spacer'; grid.appendChild(sp); }
 
     for (let d = 1; d <= 31; d++) {
       const date = new Date(year, month, d);
       if (date.getMonth() !== month) break;
 
       const dayNum = Math.round((date - start) / 86400000) + 1;
-      if (dayNum < 1 || dayNum > 60) {
-        const sp = document.createElement('div');
-        sp.className = 'spacer';
-        grid.appendChild(sp);
-        continue;
-      }
+      if (dayNum < 1 || dayNum > 60) { const sp = document.createElement('div'); sp.className = 'spacer'; grid.appendChild(sp); continue; }
 
-      const id  = `${year}-${month}-${d}`;
-      const el  = document.createElement('div');
+      const id = `${year}-${month}-${d}`;
+      const el = document.createElement('div');
       el.className = 'day';
 
-      const isTicked   = !!stored[id];
-      const isToday    = date.getTime() === today.getTime();
-      const isPast     = date < today;
-      const isFuture   = date > today;
-      const isMilestone = !!milestones[dayNum];
+      if (stored[id])          el.classList.add('ticked');
+      if (date.getTime() === today.getTime()) el.classList.add('today');
+      if (date < today && !stored[id]) el.classList.add('past');
+      if (date > today)        el.classList.add('future');
+      if (milestones[dayNum])  el.classList.add('milestone');
 
-      if (isTicked)    el.classList.add('ticked');
-      if (isToday)     el.classList.add('today');
-      if (isPast && !isTicked) el.classList.add('past');
-      if (isFuture)    el.classList.add('future');
-      if (isMilestone) el.classList.add('milestone');
+      const numEl = document.createElement('div'); numEl.className = 'day-num'; numEl.textContent = d; el.appendChild(numEl);
+      if (stored[id]) { const chk = document.createElement('div'); chk.className = 'check-icon'; chk.textContent = '✓'; el.appendChild(chk); }
+      if (milestones[dayNum]) { const badge = document.createElement('div'); badge.className = 'day-badge'; badge.textContent = milestones[dayNum]; el.appendChild(badge); }
 
-      const numEl = document.createElement('div');
-      numEl.className = 'day-num';
-      numEl.textContent = d;
-      el.appendChild(numEl);
-
-      if (isTicked) {
-        const chk = document.createElement('div');
-        chk.className = 'check-icon';
-        chk.textContent = '✓';
-        el.appendChild(chk);
-      }
-
-      if (isMilestone) {
-        const badge = document.createElement('div');
-        badge.className = 'day-badge';
-        badge.textContent = milestones[dayNum];
-        el.appendChild(badge);
-      }
-
-      if (!isFuture) {
+      if (date <= today) {
         el.addEventListener('click', () => {
           if (stored[id]) {
             delete stored[id];
@@ -451,13 +591,11 @@
             stored[id] = true;
             el.classList.add('ticked');
             el.classList.remove('past');
-            const chk = document.createElement('div');
-            chk.className = 'check-icon';
-            chk.textContent = '✓';
-            el.appendChild(chk);
+            const chk = document.createElement('div'); chk.className = 'check-icon'; chk.textContent = '✓'; el.appendChild(chk);
           }
           try { localStorage.setItem(KEY, JSON.stringify(stored)); } catch {}
           updateStats();
+          pushToGitHub();
         });
       }
 
@@ -467,6 +605,7 @@
     cal.appendChild(grid);
   });
 
+  /* ── Stats ── */
   const taglines = [
     'We do hard things. Start the clock.',
     'Day by day. No shortcuts.',
@@ -481,7 +620,7 @@
   function calcStreak() {
     let streak = 0;
     for (let i = 0; i < 60; i++) {
-      const d = new Date(start.getTime() + i * 86400000);
+      const d  = new Date(start.getTime() + i * 86400000);
       if (d > today) break;
       const id = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
       if (stored[id]) { streak++; } else { streak = 0; }
@@ -493,18 +632,17 @@
     const ticked = Object.keys(stored).length;
     const pct    = Math.round(ticked / 60 * 100);
     const streak = calcStreak();
-
-    document.getElementById('count-ticked').textContent = ticked;
-    document.getElementById('count-left').textContent   = 60 - ticked;
-    document.getElementById('count-streak').textContent = streak;
-    document.getElementById('hero-day').textContent     = ticked;
-    document.getElementById('progress-fill').style.width = pct + '%';
-    document.getElementById('pct-label').textContent   = pct + '% complete';
-
+    document.getElementById('count-ticked').textContent      = ticked;
+    document.getElementById('count-left').textContent        = 60 - ticked;
+    document.getElementById('count-streak').textContent      = streak;
+    document.getElementById('hero-day').textContent          = ticked;
+    document.getElementById('progress-fill').style.width     = pct + '%';
+    document.getElementById('pct-label').textContent         = pct + '% complete';
     const idx = Math.min(Math.floor(ticked / 8), taglines.length - 1);
-    document.getElementById('hero-tagline').textContent = ticked > 0 ? taglines[idx] : 'We do hard things. Start the clock.';
+    document.getElementById('hero-tagline').textContent      = ticked > 0 ? taglines[idx] : 'We do hard things. Start the clock.';
   }
 
+  refreshBadge();
   updateStats();
 </script>
 </body>
